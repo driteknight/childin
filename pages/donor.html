@@ -248,6 +248,7 @@
     <script src="../vendor/datatables-responsive/dataTables.responsive.js"></script> -->
 
     <script src="../dist/js/sb-admin-2.js"></script>
+    <script src = "../js/endpoints.js"></script>
 
     <script
 		src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
@@ -348,24 +349,35 @@
 
       function loadTable() {
         $('#tbody').html("");
-        //TODO Make Ajax Call
-        for(var i = 1; i < 11; i++) {
-        $('#tbody').append(
-            '<tr id = "' +  i+ '"><td>' + i
-                + '</td><td>' + "Vivek" + i + '</td><td>'
-                + 'Male' + '</td><td>'
-                + '2016-11-11'+ '</td><td>'
-                + '2016-11-11'+ '</td><td>'
-                + "Vivek" + '</td><td>'
-                + 123456789 + '</td><td><a data-id="row-' + i
-                + '" href="javascript:editRow(' + i
-                + ');" class="btn btn-warning btn-sm btn-block">Edit</a><a href="javascript:removeRow(' + i + ');" class="btn btn-danger btn-sm btn-block">Delete</a></td></tr>');
-            }
+        $.ajax({
+          url : API_HOST + "/users/donor",
+          method : "GET",
+          success : function(data) {
+            for(var i = 1; i < 11; i++) {
+            $('#tbody').append(
+                '<tr id = "' +  i + '"><td>' + i
+                    + '</td><td>' + data[i].Name '</td><td>'
+                    + data[i].GenderType '</td><td>'
+                    + data[i].DOB + '</td><td>'
+                    + data[i].WeddingAniversayDate + '</td><td>'
+                    + data[i].Address '</td><td>'
+                    + data[i].MobileNo + '</td><td><a data-id="row-' + i
+                    + '" href="javascript:editRow(' + i
+                    + ');" class="btn btn-warning btn-sm btn-block">Edit</a><a href="javascript:removeRow(' + i + ');" class="btn btn-danger btn-sm btn-block">Delete</a></td></tr>');
+                }
 
-            $('#donor-table').DataTable({
-                responsive: true
-            });
-          }
+                $('#donor-table').DataTable({
+                    responsive: true
+                });
+          }, error : function(xhr, ajaxOptions, thrownError) {
+								alert("Error status code: " + xhr.status);
+								alert("Error details: " + thrownError);
+					}
+
+
+        });
+
+      }
 
 
 
@@ -373,17 +385,59 @@
         //TODO Make AJAX Call
         console.log(name + " " + gender + " " + dob + " " + doa + " " + address + " " + mobile);
         $("#edit-modal").modal('hide');
+
+        $.ajax() {
+          url : API_HOST + "/users/donor/edit",
+          method : "POST",
+          data : {"Name" : name, "GenderType" : gender, "DOB" : dob, "DOA": doa, "Address" : address, "MobileNo" : mobile}
+          success : function(data) {
+              alert("Data has been succesfully Edited");
+          },
+          error : function(xhr, ajaxOptions, thrownError) {
+										alert("Error status code: " + xhr.status);
+										alert("Error details: " + thrownError);
+					}
+        }
+
+
       }
 
       function addDonor(name, gender, dob, doa, address, mobile) {
         //TODO Make AJAX Call
         console.log(name + " " + gender + " " + dob + " " + doa + " " + address + " " + mobile);
         $("#add-modal").modal('hide');
+
+        $.ajax() {
+          url : API_HOST + "/users/donor",
+          method : "POST",
+          data : {"Name" : name, "GenderType" : gender, "DOB" : dob, "DOA": doa, "Address" : address, "MobileNo" : mobile}
+          success : function(data) {
+              alert("Data has been succesfully Added");
+          },
+          error : function(xhr, ajaxOptions, thrownError) {
+							alert("Error status code: " + xhr.status);
+							alert("Error details: " + thrownError);
+					}
+        }
+
       }
 
       function removeDonor(name, gender, dob, doa, address, mobile) {
         console.log(name + " " + gender + " " + dob + " " + doa + " " + address + " " + mobile);
         //TODO Make AJAX Call
+        $.ajax() {
+          url : API_HOST + "/users/donor/delete",
+          method : "POST",
+          data : {"Name" : name, "GenderType" : gender, "DOB" : dob, "DOA": doa, "Address" : address, "MobileNo" : mobile}
+          success : function(data) {
+              alert("Data has been succesfully Deleted");
+          },
+          error : function(xhr, ajaxOptions, thrownError) {
+							alert("Error status code: " + xhr.status);
+							alert("Error details: " + thrownError);
+					}
+        }
+
       }
       </script>
 

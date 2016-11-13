@@ -202,14 +202,14 @@
 
     <script src = "http://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 
+    <script src = "../js/endpoints.js"></script>
+
     <script type="text/javascript" language="javascript" class="init">
       $(document).ready(function() {
 
           loadTable();
 
           $("#navbar").load("navbar.html");
-
-
 
           $(function() {
             if (!Modernizr.inputtypes.date) {
@@ -288,27 +288,46 @@
 
       function loadTable() {
         $('#tbody').html("");
-        //TODO Make Ajax Call
-        for(var i = 1; i < 11; i++) {
-        $('#tbody').append(
-            '<tr role="row" id = "' +  i+ '""><td class="sorting_1">' + i
-                + '</td><td>' + "Vivek" + i + '</td><td>'
-                + 'Male' + '</td><td>'
-                + '2016-11-11'+ '</td><td>'
-                + "Vivek" + '</td><td><a data-id="row-' + i
-                + '" href="javascript:editRow(' + i
-                + ');" class="btn btn-warning btn-sm btn-block">Edit</a><a href="javascript:removeRow(' + i + ');" class="btn btn-danger btn-sm btn-block">Delete</a></td></tr>');
+        $.ajax({
+          url : API_HOST + "/users/child",
+          method : "GET",
+          success : function(data) {
+            for(var i = 0; i < data.length; i++) {
+            $('#tbody').append(
+                '<tr role="row" id = "' +  i + '""><td class="sorting_1">' + i
+                    + '</td><td>' + data[i].Name + '</td><td>'
+                    + data[i].GenderType + '</td><td>'
+                    + data[i].DOB + '</td><td>'
+                    + data[i].Description + '</td><td><a data-id="row-' + i
+                    + '" href="javascript:editRow(' + i
+                    + ');" class="btn btn-warning btn-sm btn-block">Edit</a><a href="javascript:removeRow(' + i + ');" class="btn btn-danger btn-sm btn-block">Delete</a></td></tr>');
             }
 
             $('#child-table').DataTable({
                 responsive: true
             });
           }
+        });
+
+
+      }
 
       function editChild(name, gender, dob, description) {
         //TODO Make AJAX Call
         console.log(name + " " + gender + " " + dob + " " + description);
         $("#edit-modal").modal('hide');
+        $.ajax({
+          url : API_HOST + "/users/child",
+          method : "POST",
+          data : {'Name' : name, 'GenderType' : gender, 'DOB' : dob, 'Description' : description},
+          success : function(data) {
+            alert("Child Record successfully edited");
+          },
+          error : function(xhr, ajaxOptions, thrownError) {
+							alert("Error status code: " + xhr.status);
+							alert("Error details: " + thrownError);
+					}
+        });
       }
 
       function addChild(name, gender, dob, description) {
@@ -316,12 +335,35 @@
         console.log(name + " " + gender + " " + dob + " " + description);
 
         $("#add-modal").modal('hide');
+        $.ajax({
+          url : API_HOST + "/users/child",
+          method : "POST",
+          data : {'Name' : name, 'GenderType' : gender, 'DOB' : dob, 'Description' : description},
+          success : function(data) {
+            alert("Child Record successfully added");
+          },
+          error : function(xhr, ajaxOptions, thrownError) {
+						alert("Error status code: " + xhr.status);
+						alert("Error details: " + thrownError);
+					}
+        });
       }
 
       function removeChild(name, gender, dob, description) {
         console.log(name + " " + gender + " " + dob + " " + description);
+        $.ajax({
+          url : API_HOST + "/users/child/delete/",
+          method : "GET",
+          data : {'Name' : name, 'GenderType' : gender, 'DOB' : dob, 'Description' : description},
+          success : function(data) {
+            alert("Child Record successfully deleted");
+          },
+          error : function(xhr, ajaxOptions, thrownError) {
+						alert("Error status code: " + xhr.status);
+						alert("Error details: " + thrownError);
+					}
+        });
 
-        //TODO Make AJAX Call
       }
 
     </script>

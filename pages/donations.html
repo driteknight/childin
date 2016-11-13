@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Donation</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="../vendor/morrisjs/morris.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <link href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel = "stylesheet" />
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0" id = "navbar">
+
+        </nav>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Donations</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <div class="row">
+              <div class="col-lg-12 ">
+                  <button class="btn btn-primary pull-right" data-toggle="modal" onclick="addRow()">
+                    <b>Add New Donation</b>
+                  </button>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="panel panel-default">
+                  <div class="panel-heading"> List of Donations </div>
+                    <div class="panel-body">
+                      <table width="100%" class="table table-striped table-bordered table-hover" id="child-table">
+                        <thead>
+                          <tr>
+                            <th>Sno</th>
+                            <th style="display:none;">Donor Id</th>
+                            <th>Donor</th>
+                            <th style="display:none;">Child Id</td>
+                            <th>Child</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Buttons</th>
+                          </tr>
+                        </thead>
+                        <tbody id = "tbody">
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="modal fade" id="edit-donation" tabindex="-1" role="dialog" aria-labelledby="edit-modal-label">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <form class="form-horizontal" id="edit-donation-form">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <h4 class="modal-title" id="edit-modal-label">Edit Don</h4>
+                </div>
+                <div class="modal-body">
+                  <input type="hidden" id="edit-id" value="" class="hidden">
+                  <div class="form-group">
+                    <label for="name" class="col-sm-2 control-label">Name</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="name"
+                        name="name" placeholder="Child Name" required>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="gender" class="col-sm-2 control-label">Gender</label>
+                    <div class="col-sm-10">
+                      <select class="form-control" id="gender" name="gender"
+                        placeholder="Gender" required>
+                        <option selected="selected">Male</option>
+                        <option>Female</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="dob" class="col-sm-2 control-label">DOB</label>
+                    <div class="col-sm-10">
+                      <input type="date" class="form-control" id="dob"
+                        name="dob" placeholder="Date of birth" required>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="description" class="col-sm-2 control-label">Description</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="description"
+                        name="description" placeholder="Description" required>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default"
+                    data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div> -->
+
+        <div class="modal fade" id="add-donation-modal" tabindex="-1" role="dialog"
+          aria-labelledby="add-donation-modal-label">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <form class="form-horizontal" id="add-donation-form">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <h4 class="modal-title" id="add-donation-modal-label">Add New Donation</h4>
+                </div>
+                <div class="modal-body">
+                  <div class="form-group">
+                    <label for="add-donation-donor" class="col-sm-2 control-label">Donor</label>
+                    <div class="col-sm-10">
+                      <select class="form-control" id="add-donation-donor" name="donor"
+                        placeholder="Donor" required>
+                        <option>dummydonor</option>
+                      </select>
+                      <a href="#" onclick="launch_donor_modal()">Register Donor</a>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="add-donation-child" class="col-sm-2 control-label">Child</label>
+                    <div class="col-sm-10">
+                      <select class="form-control" id="add-donation-child" name="child"
+                        placeholder="Child" required>
+                        <option>dummychild</option>
+                      </select>
+                      <a href="#" onclick="launch_child_modal()">Register Child</a>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="add-donation-amount" class="col-sm-2 control-label">Amount</label>
+                    <div class="col-sm-10">
+                      <input type="number" class="form-control" id="add-donation-amount"
+                        name="amount" placeholder="Amount of Donation" required>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="add-donation-date" class="col-sm-2 control-label">Date</label>
+                    <div class="col-sm-10">
+                      <input type="date" class="form-control" id="add-donation-date"
+                        name="date" placeholder="Date of Donation" required>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="add-donation-description" class="col-sm-2 control-label">Description</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="add-donation-description"
+                        name="description" placeholder="Description" required>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default"
+                    data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Add Donation</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="add-donor-modal" tabindex="-1" role="dialog"
+          aria-labelledby="add-modal-label">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <form class="form-horizontal" id="add-donor-form">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <h4 class="modal-title" id="add-modal-label">Add New Donor</h4>
+                </div>
+                <div class="modal-body">
+                  <div class="form-group">
+                    <label for="add-donor-name" class="col-sm-2 control-label">Name</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="add-donor-name"
+                        name="name" placeholder="Donor Name" required>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="add-donor-gender" class="col-sm-2 control-label">Gender</label>
+                    <div class="col-sm-10">
+                      <select class="form-control" id="add-donor-gender" name="gender"
+                        placeholder="Gender" required>
+                        <option selected="selected">Male</option>
+                        <option>Female</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="add-donor-dob" class="col-sm-2 control-label">DOB</label>
+                    <div class="col-sm-10">
+                      <input type="date" class="form-control" id="add-donor-dob"
+                        name="dob" placeholder="Date of birth" requied>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="add-donor-doa" class="col-sm-2 control-label">DOA</label>
+                    <div class="col-sm-10">
+                      <input type="date" class="form-control" id="add-donor-doa"
+                        name="doa" placeholder="Date of Anninversary">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="add-donor-address" class="col-sm-2 control-label">Address</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="add-donor-address"
+                        name="address" placeholder="Address" required>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="add-donor-mobile" class="col-sm-2 control-label">Mobile</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="add-donor-mobile"
+                        name="mobile" placeholder="Mobile" required>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default"
+                    data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Add Donor</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="add-child-modal" tabindex="-1" role="dialog"
+          aria-labelledby="add-child-modal-label">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <form class="form-horizontal" id="add-child-form">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <h4 class="modal-title" id="add-child-modal-label">Add New Child</h4>
+                </div>
+                <div class="modal-body">
+                  <div class="form-group">
+                    <label for="add-child-name" class="col-sm-2 control-label">Name</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="add-child-name"
+                        name="name" placeholder="Child Name" required>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="add-child-gender" class="col-sm-2 control-label">Gender</label>
+                    <div class="col-sm-10">
+                      <select class="form-control" id="add-child-gender" name="gender"
+                        placeholder="Gender" required>
+                        <option selected="selected">Male</option>
+                        <option>Female</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="add-child-dob" class="col-sm-2 control-label">DOB</label>
+                    <div class="col-sm-10">
+                      <input type="date" class="form-control" id="add-child-dob"
+                        name="dob" placeholder="Date of birth" required>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="add-child-description" class="col-sm-2 control-label">Description</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="add-child-description"
+                        name="description" placeholder="Description" required>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default"
+                    data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Add Child</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+
+    <!-- jQuery -->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../vendor/metisMenu/metisMenu.min.js"></script>
+
+    <script src="../dist/js/sb-admin-2.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
+
+    <script src = "http://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+
+    <script type="text/javascript" language="javascript" class="init">
+      $(document).ready(function() {
+
+          loadTable();
+
+          $("#navbar").load("navbar.html");
+
+          $(function() {
+            if (!Modernizr.inputtypes.date) {
+              $('input[type=date]').datepicker({
+                dateFormat : 'yy-mm-dd'
+              });
+            }
+          });
+          //
+          // $("#edit-donation-form").on("submit", function(event) {
+          //     event.preventDefault();
+          //
+          //     var donor = $("#donor").val();
+          //     var child = $("#child").val();
+          //     var dob = $("#dob").val();
+          //     var description = $("#description").val();
+          //
+          //     $("#edit-modal").modal('hide');
+          //     editDonor(name, gender, dob, description);
+          // });
+
+                // Add new row
+          $("#add-donation-form").on("submit", function(event) {
+              event.preventDefault();
+
+              var donor = $("#add-donation-donor").val();
+              var child = $("#add-donation-child").val();
+              var date = $("#add-donation-date").val();
+              var description = $("#add-donation-description").val();
+              var amount = $("#add-donation-amount").val();
+
+              console.log(donor + " " + child + " " + amount + " " + date + " " + description + " ");
+
+              $("#add-donations-modal").modal('hide');
+              addDonation(donor, child, amount, date, description);
+          });
+
+          $("#add-donor-form").on("submit", function(event) {
+              event.preventDefault();
+
+              var name = $("#add-donor-name").val();
+              var gender = $("#add-donor-gender").val();
+              var dob = $("#add-donor-dob").val();
+              var doa = $("#add-donor-doa").val();
+              var address = $("#add-donor-address").val();
+              var mobile = $("#add-donor-mobile").val();
+
+
+              console.log(name + " " + gender + " " + dob + " " + doa + " " + address + " " + mobile);
+
+              $("#add-modal").modal('hide');
+              addDonor(name, gender, dob, doa, address, mobile);
+          });
+
+          $("#add-child-form").on("submit", function(event) {
+              event.preventDefault();
+
+              var name = $("#add-child-name").val();
+              var gender = $("#add-child-gender").val();
+              var dob = $("#add-child-dob").val();
+              var description = $("#add-child-description").val();
+
+              console.log(name + " " + gender + " " + dob + " " + description);
+
+              $("#add-child-modal").modal('hide');
+              addChild(name, gender, dob, description);
+            });
+
+
+      });
+
+      function addRow() {
+        $("#add-donation-modal").modal('show');
+        loadDonors();
+        loadChildren();
+      }
+
+      function launch_donor_modal() {
+        $("#add-donation-modal").modal('hide');
+        $("#add-donor-modal").modal('show');
+      }
+
+      function launch_child_modal() {
+        $("#add-donation-modal").modal('hide');
+        $("#add-child-modal").modal('show');
+
+      }
+
+      // Edit row
+      // function editRow(id) {
+      //
+      //   var tds = document.getElementById(id).children;
+      //   var old_name = tds[1].innerHTML;
+      //   var old_gender = tds[2].innerHTML;
+      //   var old_dob = tds[3].innerHTML;
+      //   var old_description = tds[4].innerHTML
+      //
+      //   console.log(old_gender);
+      //
+      //   $("#edit-modal").modal('show');
+      //
+      //   $("#name").val(old_name);
+      //   $("#gender").val(old_gender);
+      //   $("#dob").val(old_dob);
+      //   $("#description").val(old_description);
+      //
+      //   //TODO Check what to do with this data
+      // }
+
+      function removeRow(id) {
+
+        var tds = document.getElementById(id).children;
+        var donor_id = tds[1].innerHTML;
+        var child_id = tds[3].innerHTML;
+        var amount = tds[5].innerHTML;
+        var date = tds[6].innerHTML;
+        var description = tds[7].innerHTML
+
+        console.log(donor_id + " " + child_id + " " + amount + " " + date + " " + description);
+
+        var decision = confirm("Do you want to delete?");
+        if (decision == true) {
+          removeDonation(donor_id, child_id, date, amount, description);
+        }
+      }
+
+      function loadTable() {
+        $('#tbody').html("");
+        //TODO Make Ajax Call
+        for(var i = 1; i < 11; i++) {
+        $('#tbody').append(
+            '<tr role="row" id = "' +  i + '"><td class="sorting_1">' + i
+                + '</td><td style="display:none;">' + 1 + '</td><td>' + "Vivek" + i +
+                '</td><td style="display:none;">' + 1 + '</td><td>'
+                + 'Vivek' + '</td><td>'
+                + 1234 + '</td><td>'
+                + '2016-11-11'+ '</td><td>'
+                + "Vivek Desc" + '</td><td><a href="javascript:removeRow(' + i + ');" class="btn btn-danger btn-sm btn-block">Delete</a></td></tr>');
+            }
+
+            $('#child-table').DataTable({
+                responsive: true
+            });
+
+            $('#to_hide1').attr("style", "display:none");
+            $('#to_hide2').attr("style", "display:none");
+        }
+
+        function loadDonors() {
+          // TODO Write AJAX Call
+        }
+
+        function loadChildren() {
+          //TODO Write AJAX Call
+        }
+
+      // function editDonati(name, gender, dob, description) {
+      //   //TODO Make AJAX Call
+      //   $("#edit-modal").modal('hide');
+      // }
+
+      function addDonor(name, gender, dob, doa, address, mobile) {
+        //TODO make ajax call
+      }
+
+      function addChild(name, gender, dob, description) {
+
+      }
+
+      function addDonation(donor_id, child_id, amount, date, description) {
+        //TODO Make AJAX Call
+        $("#add-donation-modal").modal('hide');
+      }
+
+      function removeDonation(donor_id, child_id, amount, date, description) {
+        //TODO Make AJAX Call
+      }
+
+    </script>
+
+</body>
+
+</html>

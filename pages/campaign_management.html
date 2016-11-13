@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Email And SMS</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="../vendor/morrisjs/morris.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <link href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel = "stylesheet" />
+
+<style>
+td {
+padding-top: 5px;
+padding-bottom: 5px;
+
+}
+</style>
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0" id = "navbar">
+
+        </nav>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Email And SMS</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <div class = "row">
+              <div class = "col-lg-2">
+                <label for = "template">Template</label>
+                <select class = "form-control" id = "template">
+                </select>
+              </div>
+            </div>
+            <div class = "row">
+              <div class = "col-lg-5">
+                <label for = "field1">Donor Emails</label>
+              </div>
+            </div>
+
+            <div class="row">
+
+                <table id = "donor-list">
+                </table>
+
+            </div>
+
+
+
+        <div class = "row">
+          <div class = "col-lg-1">
+            <button class = "btn btn-primary add-more" id = "add-donor">Add Donor</button>
+          </div>
+          <div class = "col-lg-1">
+            <button class = "btn btn-primary" id = "send">Send</button>
+          </div>
+
+        </div>
+      </div>
+
+    <!-- jQuery -->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../vendor/metisMenu/metisMenu.min.js"></script>
+
+    <script src="../dist/js/sb-admin-2.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
+
+    <script src = "http://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+
+    <script type="text/javascript" language="javascript" class="init">
+      $(document).ready(function() {
+
+          loadDonors();
+
+          $("#navbar").load("navbar.html");
+
+          $("#id-donor").click(function() {
+            window.id = window.id + 1;
+            $("donor-list").append(
+
+            );
+
+            $("#donor-list").append(select);
+          });
+
+          var nextID = 1;
+
+          $(".add-more")
+								.click(
+										function(event) {
+											event.preventDefault();
+											var newInput = '<tr id = "version' + nextID + '" name = "version"><td class = "col-lg-3 "><input class="form-control version-input" id = "input' + nextID + '" type="text"></td><td class = "col-lg-2 nopadding"><button id="remove' + nextID + '" class="btn btn-danger remove-me">X</button></div></td><td /><td /><td /><td /></tr>';
+											$("#donor-list").append(newInput);
+											nextID = nextID + 1;
+											var versionsToMergeCount = $(".remove-me").length;
+											if (versionsToMergeCount == 2) {
+												$('#merge').removeAttr('disabled');
+											}
+										});
+
+						$(document).on("click", ".remove-me", function() {
+							var buttonID = this.id;
+							var rowID = "version" + buttonID.substring("remove".length);
+							var detailsRowID = "details" + buttonID.substring("remove".length);
+							$("#" + rowID).remove();
+							$("#" + detailsRowID).remove();
+							var versionsToMergeCount = $(".remove-me").length;
+							if (versionsToMergeCount == 1) {
+								$('#merge').attr('disabled', 'disabled');
+							}
+						});
+
+            $("#send").click( function() {
+              var donor_list= [];
+              $(".version-input").each(function() {
+          			if (this.value !== '') {
+          				donor_list.push(this.value);
+          			}
+          		});
+
+              
+            });
+
+      });
+
+
+
+      function loadDonors() {
+        //TODO make AJAX Call and store in window.donors
+      }
+
+      function loadTemplates() {
+        //TODO make ajax calls to populate templates
+      }
+
+    </script>
+
+</body>
+
+</html>
